@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express=require('express');
 const app=express();
 const port=4000;
@@ -12,7 +13,12 @@ app.use(cors());
 
 //Database connection with mongodb atlas
 
-mongoose.connect(URL);
+mongoose.connect(process.env.URL,{
+
+    useNewUrlParser: "true",
+    useUnifiedTopology: "true"
+  
+  });
 
 
 // API Creation
@@ -21,6 +27,24 @@ app.get("/",(req,res)=>{
 })
 
 
+// Image Storage Engine 
+const storage =multer.diskStorage({
+    destination: './upload/images',
+    filename: (req,file,cb)=>{
+        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+
+const upload=multer({storage:storage})
+
+//creating upload endpoint for images
+app.use('/images',express.static('upload/images'))
+app.post("/upload",upload.single('product'),(req,res)=>{
+    res.json({
+        success:1,
+        image_url:`http://localhost:${port}/images/${req.file.filename}`
+    })
+})
 
 app.listen(port,(err)=>{
     if(err) throw err;
