@@ -5,10 +5,19 @@ import logo from '../Assests/logo.png'; //need to download
 import cart_icon from '../Assests/cart_icon.png';//need to download
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { ShopContext } from '../../Context/ShopContext';
+import nav_dropdown from '../Assets/nav_dropdown.png'
 const Navbar = () => {
 
 const [menu, setMenu] =useState("shop");
+
+const {getTotalCartItems}=useContext(ShopContext);
+const menuRef=useRef();
+
+const dropdown_toggle=(e)=>{
+    menuRef.current.classList.toggle('nav-menu-visible');
+    e.target.classList.toggle('open');
+}
 
   return (
     <div className='navbar'>
@@ -16,7 +25,8 @@ const [menu, setMenu] =useState("shop");
         <img src={logo} width='80px' height='80px' alt="Missing" />
         <p>SHOPPER</p>
       </div>
-      <ul className='nav-menu'>
+      <img className='nav-dropdown' onClick={dropdown_toggle} src={nav_dropdown} alt="" />
+      <ul ref={menuRef} className='nav-menu'>
         <li onClick={()=>{setMenu("shop")}}><Link style={{textDecoration: 'none'}} to='/'>Shop</Link>{menu==="shop"?<hr/>:<></>}</li>
         <li onClick={()=>{setMenu("mens")}}><Link style={{textDecoration: 'none'}} to='/mens'>Men</Link>{menu==="mens"?<hr/>:<></>}</li>
         <li onClick={()=>{setMenu("womens")}}><Link style={{textDecoration: 'none'}} to='/womens'>Women</Link>{menu==="womens"?<hr/>:<></>}</li>
@@ -27,7 +37,7 @@ const [menu, setMenu] =useState("shop");
       ?<button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace('/')}}>Logout</button>
       :<Link to='/login'> <button>Login</button></Link>}
        <Link to='/cart'><img src={cart_icon} width='40px' height='40px' alt="Missing" /></Link>
-        <div className='nav-cart-count'>0</div>
+        <div className='nav-cart-count'>{getTotalCartItems()}</div>
       </div>
     </div>
   )
