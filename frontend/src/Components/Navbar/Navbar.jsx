@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useRef } from 'react';
 import './Navbar.css';
 
 import logo from '../Assests/logo.png'; //need to download
@@ -6,7 +6,7 @@ import cart_icon from '../Assests/cart_icon.png';//need to download
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShopContext } from '../../Context/ShopContext';
-import nav_dropdown from '../Assets/nav_dropdown.png'
+import nav_dropdown from '../Assests/nav_dropdown.png'
 const Navbar = () => {
 
 const [menu, setMenu] =useState("shop");

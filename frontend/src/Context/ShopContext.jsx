@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-// import all_product from '../Components/Assests/all_product';
+import React, { createContext, useEffect, useState } from 'react'
+import all_product from '../Components/Assests/all_product';
 
 export const ShopContext= createContext(null)
 
@@ -64,7 +64,7 @@ const ShopContextProvider=(props)=>{
                 'auth-token':`${localStorage.getItem('auth-token')}`,
                 'Content-Type':'application/json',
             },
-            body:JSON>stringify({"itemId":itemId}),
+            body:JSON.stringify({"itemId":itemId}),
            })
            .then((response)=>response.json())
            .then((data)=>console.log(data));
